@@ -1,0 +1,36 @@
+{
+  "name": "Kiinteistöpalvelu Esimerkki",
+  "slug": "demo-kiinteistopalvelu",
+  "businessId": "0000000-0",
+  "town": "Pori",
+  "industryKey": "kiinteistöhuolto",
+  "industryLabel": "Kiinteistöhuolto",
+  "phone": "044 000 0000",
+  "email": "info@esimerkki.fi",
+  "address": "Esimerkkikatu 1",
+  "tagline": "Kiinteistösi kunnossa, ympäri vuoden.",
+  "description": "Paikallinen kiinteistöhuolto Porissa yli 15 vuoden kokemuksella. Taloyhtiöt, yritykset ja omakotitalot — yksi numero riittää.",
+  "services": [
+    { "title": "Kiinteistöhuolto", "desc": "Taloyhtiöiden ja liikekiinteistöjen jatkuva huolto sopimuksella." },
+    { "title": "Lumityöt ja hiekoitus", "desc": "Pihat ja pelastustiet auki joka aamu ennen kello seitsemää." },
+    { "title": "Viheraluetyöt", "desc": "Nurmikot, pensaat ja istutukset siistinä kasvukauden läpi." },
+    { "title": "Pienkorjaukset", "desc": "Ovipumput, lukot, valaistus ja muut arjen korjaukset ilman välikäsiä." }
+  ],
+  "usps": [
+    { "title": "Paikallinen ja nopea", "desc": "Koko henkilökunta asuu Porissa — hälytystyöt tunnissa." },
+    { "title": "Yksi sopimus, kaikki työt", "desc": "Ei erillisiä laskuttajia: huolto, korjaus ja piha samalta tiimiltä." },
+    { "title": "Kiinteä kuukausihinta", "desc": "Budjetointi on helppoa, kun hinta ei elä säiden mukana." }
+  ],
+  "serviceArea": ["Pori", "Ulvila", "Nakkila", "Luvia", "Noormarkku"],
+  "hours": [
+    { "days": "Ma–Pe", "time": "7–16" },
+    { "days": "Päivystys", "time": "24/7" }
+  ],
+  "template": "nordic",
+  "demoBanner": true,
+  "agency": {
+    "name": "Sinun Toiminimesi",
+    "email": "ilari@ilarischmidt.com",
+    "phone": ""
+  }
+}

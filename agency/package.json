@@ -1,0 +1,11 @@
+{
+  "name": "agency",
+  "private": true,
+  "type": "module",
+  "description": "Automated local-business website agency pipeline (Satakunta, Finland)",
+  "scripts": {
+    "discover": "node scripts/discover.mjs",
+    "audit": "node scripts/audit.mjs",
+    "generate": "node scripts/generate.mjs"
+  }
+}

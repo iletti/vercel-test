@@ -37,3 +37,8 @@ yarn-error.log*
 
 # Turborepo
 .turbo
+
+# agency pipeline: real lead data and generated prospect sites stay local
+agency/leads/data/
+agency/sites/*
+!agency/sites/demo-kiinteistopalvelu/

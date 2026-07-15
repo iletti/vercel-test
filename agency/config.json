@@ -1,0 +1,68 @@
+{
+  "region": "Satakunta",
+  "municipalities": [
+    "Pori",
+    "Rauma",
+    "Ulvila",
+    "Kankaanpää",
+    "Huittinen",
+    "Kokemäki",
+    "Harjavalta",
+    "Eura",
+    "Eurajoki",
+    "Säkylä",
+    "Nakkila",
+    "Pomarkku",
+    "Merikarvia",
+    "Siikainen",
+    "Jämijärvi",
+    "Karvia"
+  ],
+  "expansionMunicipalities": [
+    "Laitila",
+    "Uusikaupunki",
+    "Ikaalinen",
+    "Parkano",
+    "Sastamala",
+    "Loimaa"
+  ],
+  "targetIndustries": [
+    { "key": "parturi-kampaamo", "match": "parturi|kampaam|hiusten" },
+    { "key": "kauneushoitola", "match": "kauneudenhoito|kosmetolog|kauneushoito" },
+    { "key": "autokorjaamo", "match": "moottoriajoneuvojen huolto|autojen huolto|autokorjaa|renkaiden" },
+    { "key": "rakennus", "match": "rakennusten rakentaminen|talonrakennus|rakennuspalvelu|kirvesmies" },
+    { "key": "remontointi", "match": "rakennuspuusepän|lattianpäällyst|maalaus|saneeraus" },
+    { "key": "putkiasennus", "match": "putkiasennus|lvi-|lämpö-, vesijohto" },
+    { "key": "sähköasennus", "match": "sähköasennus" },
+    { "key": "kiinteistöhuolto", "match": "kiinteistönhoito|kiinteistöhuolto|siivous" },
+    { "key": "maansiirto", "match": "maansiirto|maarakennus|purku|kaivu" },
+    { "key": "ravintola-kahvila", "match": "ravintola|kahvila|ateriapalvelu|pitopalvelu" },
+    { "key": "fysioterapia-hieronta", "match": "fysioterapia|hieroja|hieronta|terveyspalvelu" },
+    { "key": "autokoulu", "match": "kuljettajakoulutus|autokoulu" },
+    { "key": "valokuvaus", "match": "valokuvaus" },
+    { "key": "eläinpalvelut", "match": "eläinlääkintä|lemmikki|eläinten hoito" },
+    { "key": "puutarha-metsä", "match": "maisemanhoito|puutarha|metsätalouden palvelu|metsänhoito" },
+    { "key": "kuljetus", "match": "tieliikenteen tavarankuljetus|muuttopalvelu|taksiliikenne" }
+  ],
+  "excludeCompanyForms": "asunto-?osakeyhtiö|keskinäinen kiinteistö|osuuskunta|säätiö|yhdistys",
+  "prh": {
+    "baseUrl": "https://avoindata.prh.fi/opendata-ytj-api/v3/companies",
+    "pageDelayMs": 400,
+    "maxPagesPerMunicipality": 80
+  },
+  "audit": {
+    "timeoutSeconds": 15,
+    "guessTlds": [".fi", ".com", ".net"],
+    "currentYearGrace": 1
+  },
+  "pricing": {
+    "site": { "min": 490, "recommended": 690, "max": 1190, "currency": "EUR", "vatNote": "hinnat + alv 25,5 %" },
+    "hostingPerMonth": 25,
+    "extras": {
+      "domainAndEmailSetup": 90,
+      "googleBusinessProfile": 120,
+      "extraPage": 90,
+      "logoRefresh": 150
+    }
+  }
+}

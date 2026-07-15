@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lead site profile",
+  "description": "Everything generate.mjs needs to build a tailored one-page site for a prospect. Fill from PRH data + your own research (their Facebook page, old site, phone call).",
+  "type": "object",
+  "required": ["name", "town", "phone", "tagline", "description"],
+  "properties": {
+    "name": { "type": "string", "description": "Business name as it should appear on the site" },
+    "slug": { "type": "string", "description": "Output folder / temp domain slug. Auto-derived from name if omitted." },
+    "businessId": { "type": "string", "description": "Y-tunnus, shown in footer (builds trust)" },
+    "town": { "type": "string" },
+    "industryKey": { "type": "string", "description": "Key from config.json targetIndustries; selects the default color palette" },
+    "industryLabel": { "type": "string", "description": "Human label shown in the hero kicker (bold template), e.g. 'Autokorjaamo'" },
+    "phone": { "type": "string" },
+    "email": { "type": "string" },
+    "address": { "type": "string" },
+    "tagline": { "type": "string", "description": "Hero headline, benefit-first, max ~8 words" },
+    "description": { "type": "string", "description": "1-3 sentence intro under the headline" },
+    "services": {
+      "type": "array",
+      "items": { "type": "object", "required": ["title"], "properties": { "title": { "type": "string" }, "desc": { "type": "string" } } }
+    },
+    "usps": {
+      "type": "array",
+      "items": { "type": "object", "required": ["title"], "properties": { "title": { "type": "string" }, "desc": { "type": "string" } } }
+    },
+    "serviceArea": { "type": "array", "items": { "type": "string" } },
+    "hours": {
+      "type": "array",
+      "items": { "type": "object", "properties": { "days": { "type": "string" }, "time": { "type": "string" } } }
+    },
+    "template": { "type": "string", "enum": ["nordic", "bold"], "default": "nordic" },
+    "brand": {
+      "type": "object",
+      "description": "Override the industry default palette",
+      "properties": { "primary": { "type": "string" }, "accent": { "type": "string" } }
+    },
+    "demoBanner": {
+      "type": "boolean",
+      "default": true,
+      "description": "true while pitching: shows the 'this is a proposal' bar and sets robots noindex. Set false only after the business buys."
+    },
+    "agency": {
+      "type": "object",
+      "description": "Your contact info for the demo banner",
+      "properties": { "name": { "type": "string" }, "email": { "type": "string" }, "phone": { "type": "string" } }
+    }
+  }
+}

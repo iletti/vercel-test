@@ -1,0 +1,2 @@
+businessId;name;town;phone;email;contactChannel;demoUrl;firstContact;lastContact;status;nextAction;nextActionDate;notes
+;;;;;puhelin|email|käynti;;;;new|contacted|demo-sent|negotiating|won|lost|closed-removed|do-not-contact;;;
