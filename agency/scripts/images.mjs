@@ -17,7 +17,7 @@ import path from 'node:path'
 import { httpPostJson, agencyRoot, slugify, loadConfig } from './lib.mjs'
 
 const config = loadConfig()
-const MODEL = process.env.GEMINI_IMAGE_MODEL || config.images?.model || 'gemini-2.5-flash-image'
+const MODEL = process.env.GEMINI_IMAGE_MODEL || config.images?.model || 'gemini-3.1-flash-image'
 const API_KEY = process.env.GEMINI_API_KEY
 
 const args = process.argv.slice(2)
