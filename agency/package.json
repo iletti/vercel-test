@@ -6,6 +6,7 @@
   "scripts": {
     "discover": "node scripts/discover.mjs",
     "audit": "node scripts/audit.mjs",
-    "generate": "node scripts/generate.mjs"
+    "generate": "node scripts/generate.mjs",
+    "images": "node scripts/images.mjs"
   }
 }

@@ -47,9 +47,26 @@ For each:
 cp leads/example.lead.json leads/data/<slug>.lead.json
 # edit: real name, Y-tunnus, phone (from their FB/directory), services you
 # KNOW they offer, honest neutral copy. No invented claims, no stolen photos.
+node scripts/images.mjs leads/data/<slug>.lead.json   # optional hero image (GEMINI_API_KEY)
 node scripts/generate.mjs leads/data/<slug>.lead.json          # or --template bold
 open sites/<slug>/index.html                                    # eyeball it
 ```
+
+Content rules for cold demos — this is what makes the page look *expert*
+instead of *generic*, and keeps it honest:
+
+- **stats / certifications / testimonials / priceList: only what you can
+  verify.** In a cold demo that usually means leaving testimonials out and
+  putting `[täydennetään]`-style placeholders in the pricing — or filling
+  pricing with industry-typical "alk." prices and saying so in the pitch.
+  The full sections light up when the customer supplies real facts after
+  the sale; the demo shows them *where their content will go*.
+- **faq**: safe to write — questions every customer in that industry asks
+  (vasteaika, tarjouksen sitovuus, irtisanominen). This section does the
+  most "expertise" work per line, and it emits FAQPage JSON-LD.
+- **AI hero images** are generic industry scenes by design (no text, no
+  logos, no faces). Never imply they are the prospect's premises or staff;
+  they are placeholders the customer's real photos replace at delivery.
 
 Alternate templates and palettes so demos in the same town don't look like
 siblings. Then deploy per [DEPLOY.md](DEPLOY.md) — you get a

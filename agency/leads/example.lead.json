@@ -3,25 +3,68 @@
   "slug": "demo-kiinteistopalvelu",
   "businessId": "0000000-0",
   "town": "Pori",
+  "postCode": "28100",
   "industryKey": "kiinteistöhuolto",
   "industryLabel": "Kiinteistöhuolto",
   "phone": "044 000 0000",
   "email": "info@esimerkki.fi",
   "address": "Esimerkkikatu 1",
+  "founded": 2009,
   "tagline": "Kiinteistösi kunnossa, ympäri vuoden.",
   "description": "Paikallinen kiinteistöhuolto Porissa yli 15 vuoden kokemuksella. Taloyhtiöt, yritykset ja omakotitalot — yksi numero riittää.",
+  "stats": [
+    { "value": "15+", "label": "vuotta kokemusta" },
+    { "value": "60+", "label": "huoltokohdetta" },
+    { "value": "1 h", "label": "vaste hälytystöissä" }
+  ],
   "services": [
-    { "title": "Kiinteistöhuolto", "desc": "Taloyhtiöiden ja liikekiinteistöjen jatkuva huolto sopimuksella." },
-    { "title": "Lumityöt ja hiekoitus", "desc": "Pihat ja pelastustiet auki joka aamu ennen kello seitsemää." },
-    { "title": "Viheraluetyöt", "desc": "Nurmikot, pensaat ja istutukset siistinä kasvukauden läpi." },
-    { "title": "Pienkorjaukset", "desc": "Ovipumput, lukot, valaistus ja muut arjen korjaukset ilman välikäsiä." }
+    { "title": "Kiinteistöhuolto sopimuksella", "desc": "Taloyhtiöiden ja liikekiinteistöjen jatkuva huolto: kiertävät tarkastukset, tekninen valvonta ja huoltokirjan ylläpito." },
+    { "title": "Lumityöt ja hiekoitus", "desc": "Pihat ja pelastustiet auki joka aamu ennen kello seitsemää. Liukkaudentorjunta dokumentoidaan — tärkeää taloyhtiön vastuun kannalta." },
+    { "title": "Viheraluetyöt", "desc": "Nurmikot, pensaat ja istutukset siistinä koko kasvukauden. Kevät- ja syyssiivoukset sovitusti kiinteään hintaan." },
+    { "title": "Pienkorjaukset ja päivystys", "desc": "Ovipumput, lukot, valaistus, vuotavat hanat — arjen korjaukset ilman välikäsiä, ja 24/7-päivystys äkillisiin tilanteisiin." }
+  ],
+  "process": [
+    { "title": "Kartoituskäynti", "desc": "Käydään kohde läpi paikan päällä ja kirjataan todellinen huoltotarve. Maksuton, ei sido mihinkään." },
+    { "title": "Kirjallinen tarjous", "desc": "Saat eritellyn tarjouksen viikossa: mitä tehdään, kuinka usein ja mihin hintaan." },
+    { "title": "Huolto käyntiin", "desc": "Aloitus sovittuna päivänä. Kaikki työt kirjataan, ja isännöitsijä saa raportin kuukausittain." },
+    { "title": "Jatkuva yhteydenpito", "desc": "Yksi tuttu yhteyshenkilö vastaa puhelimeen — myös silloin, kun jokin menee rikki lauantai-iltana." }
   ],
   "usps": [
-    { "title": "Paikallinen ja nopea", "desc": "Koko henkilökunta asuu Porissa — hälytystyöt tunnissa." },
-    { "title": "Yksi sopimus, kaikki työt", "desc": "Ei erillisiä laskuttajia: huolto, korjaus ja piha samalta tiimiltä." },
-    { "title": "Kiinteä kuukausihinta", "desc": "Budjetointi on helppoa, kun hinta ei elä säiden mukana." }
+    { "title": "Paikallinen ja nopea", "desc": "Koko henkilökunta asuu Porissa — hälytystöissä olemme kohteessa tunnissa." },
+    { "title": "Yksi sopimus, kaikki työt", "desc": "Ei erillisiä laskuttajia: huolto, korjaukset ja pihatyöt samalta tiimiltä." },
+    { "title": "Kiinteä kuukausihinta", "desc": "Budjetointi on helppoa, kun hinta ei elä säiden mukana. Lisätyöt aina sovitusti etukäteen." }
+  ],
+  "priceList": [
+    { "item": "Huoltosopimus, taloyhtiö (alk. 10 huoneistoa)", "price": "alk. 290 €/kk" },
+    { "item": "Huoltosopimus, liikekiinteistö", "price": "alk. 190 €/kk" },
+    { "item": "Lumityöt ja hiekoitus, omakotitalo", "price": "alk. 65 €/kk (talvikausi)" },
+    { "item": "Pienkorjaukset, tuntityö", "price": "54 €/h" },
+    { "item": "Päivystyskäynti (arki-illat ja viikonloput)", "price": "95 €/käynti + tuntityö" }
+  ],
+  "priceNote": "Hinnat sisältävät alv 25,5 %. Tarkka hinta vahvistetaan aina maksuttoman kartoituskäynnin jälkeen — ei yllätyksiä laskulla.",
+  "testimonials": [
+    { "quote": "Pihat on aurattu ennen kuin kukaan ehtii töihin, ja raportit tulevat ajallaan. Helpoin huoltoyhtiö, jonka kanssa olen toiminut.", "author": "Isännöitsijä, porilainen taloyhtiö" },
+    { "quote": "Soitin lauantaina vesivuodosta, sunnuntaina asia oli hoidettu. Se kertoo kaiken.", "author": "Liikekiinteistön omistaja, Pori" }
+  ],
+  "about": {
+    "title": "Porilainen perheyritys vuodesta 2009",
+    "text": "Kiinteistöpalvelu Esimerkki on kahden veljeksen perustama porilainen perheyritys. Meille kiinteistöhuolto tarkoittaa sitä, että asiat hoidetaan ennen kuin niistä tulee ongelmia — ja että puhelimeen vastaa aina ihminen, joka tuntee kohteesi. Kalustomme ja koko henkilökuntamme on Porissa, joten apu on lähellä myös silloin, kun sää yllättää.",
+    "owner": "Matti ja Mikko Esimerkki, yrittäjät"
+  },
+  "certifications": [
+    "Vastuuvakuutus 1 M€",
+    "Tilaajavastuu: Luotettava Kumppani",
+    "Kiinteistötyönantajat ry:n jäsen",
+    "Tulityökortit ja tieturvakortit"
   ],
   "serviceArea": ["Pori", "Ulvila", "Nakkila", "Luvia", "Noormarkku"],
+  "faq": [
+    { "q": "Kuinka nopeasti pääsette hälytystyöhön?", "a": "Arkisin tunnissa, viikonloppuisin kahdessa. Päivystysnumero on sama kuin normaali numeromme — ei erillisiä vaihteita." },
+    { "q": "Sitooko kartoituskäynti mihinkään?", "a": "Ei. Käynti ja kirjallinen tarjous ovat maksuttomia, ja tarjous on voimassa 30 päivää. Päätös on kokonaan teidän." },
+    { "q": "Voiko sopimuksen irtisanoa?", "a": "Kyllä, irtisanomisaika on yksi kuukausi. Emme usko pitkiin pakkosopimuksiin — pidämme asiakkaat laadulla." },
+    { "q": "Dokumentoitteko liukkaudentorjunnan?", "a": "Kyllä. Jokainen aurauskerta ja hiekoitus kirjataan aikaleimalla. Taloyhtiölle tämä on tärkeä turva vastuukysymyksissä." },
+    { "q": "Teettekö myös kertaluonteisia töitä?", "a": "Teemme, kaluston salliessa. Sopimusasiakkaat ovat kuitenkin etusijalla esimerkiksi lumimyräkän jälkeen." }
+  ],
   "hours": [
     { "days": "Ma–Pe", "time": "7–16" },
     { "days": "Päivystys", "time": "24/7" }

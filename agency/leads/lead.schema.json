@@ -16,9 +16,48 @@
     "address": { "type": "string" },
     "tagline": { "type": "string", "description": "Hero headline, benefit-first, max ~8 words" },
     "description": { "type": "string", "description": "1-3 sentence intro under the headline" },
+    "postCode": { "type": "string" },
+    "founded": { "type": "integer", "description": "Founding year — shown in about/JSON-LD, strong trust signal" },
+    "siteUrl": { "type": "string", "description": "Final production URL. Set after go-live; enables canonical link and absolute JSON-LD urls." },
+    "stats": {
+      "type": "array",
+      "description": "2-4 hero trust numbers, e.g. {value:'15+', label:'vuotta kokemusta'}. Only claims you can verify.",
+      "items": { "type": "object", "required": ["value", "label"], "properties": { "value": { "type": "string" }, "label": { "type": "string" } } }
+    },
     "services": {
       "type": "array",
       "items": { "type": "object", "required": ["title"], "properties": { "title": { "type": "string" }, "desc": { "type": "string" } } }
+    },
+    "process": {
+      "type": "array",
+      "description": "3-4 steps of how an engagement works ('Näin yhteistyö etenee')",
+      "items": { "type": "object", "required": ["title"], "properties": { "title": { "type": "string" }, "desc": { "type": "string" } } }
+    },
+    "priceList": {
+      "type": "array",
+      "description": "Transparent 'alkaen' pricing rows — a major expertise signal. Leave empty in demos unless prices are public knowledge; never invent a prospect's prices.",
+      "items": { "type": "object", "required": ["item", "price"], "properties": { "item": { "type": "string" }, "price": { "type": "string" } } }
+    },
+    "priceNote": { "type": "string", "description": "VAT note / disclaimer under the price table" },
+    "testimonials": {
+      "type": "array",
+      "description": "REAL quotes only, with permission. Omit entirely in cold demos.",
+      "items": { "type": "object", "required": ["quote"], "properties": { "quote": { "type": "string" }, "author": { "type": "string" } } }
+    },
+    "about": {
+      "type": "object",
+      "description": "Owner/company story section",
+      "properties": { "title": { "type": "string" }, "text": { "type": "string" }, "owner": { "type": "string" } }
+    },
+    "certifications": {
+      "type": "array",
+      "description": "Verifiable credentials only: vakuutukset, kortit, jäsenyydet, Tilaajavastuu",
+      "items": { "type": "string" }
+    },
+    "faq": {
+      "type": "array",
+      "description": "4-6 questions customers actually ask. Rendered as <details> + FAQPage JSON-LD.",
+      "items": { "type": "object", "required": ["q", "a"], "properties": { "q": { "type": "string" }, "a": { "type": "string" } } }
     },
     "usps": {
       "type": "array",

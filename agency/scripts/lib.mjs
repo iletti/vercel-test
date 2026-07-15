@@ -55,6 +55,44 @@ export async function httpGet(url, { timeout = 15, maxBytes = 1_500_000 } = {}) 
   }
 }
 
+/**
+ * POST JSON with curl. Headers and body go through a mode-600 temp config
+ * file so API keys never appear in the process list.
+ * Returns { ok, status, json, body, error }.
+ */
+export async function httpPostJson(url, { headers = {}, body = {}, timeout = 120 } = {}) {
+  const os = await import('node:os')
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'agency-'))
+  const bodyFile = path.join(tmp, 'body.json')
+  const confFile = path.join(tmp, 'curl.conf')
+  try {
+    fs.writeFileSync(bodyFile, JSON.stringify(body), { mode: 0o600 })
+    const conf = [
+      `url = ${JSON.stringify(url)}`,
+      'request = "POST"',
+      'header = "Content-Type: application/json"',
+      ...Object.entries(headers).map(([k, v]) => `header = ${JSON.stringify(`${k}: ${v}`)}`),
+      `data = "@${bodyFile}"`
+    ].join('\n')
+    fs.writeFileSync(confFile, conf, { mode: 0o600 })
+    const { stdout } = await execFileP('curl', [
+      '-sS', '--max-time', String(timeout),
+      '-w', `${META_MARK}%{http_code}`,
+      '--config', confFile
+    ], { maxBuffer: 64 * 1024 * 1024, encoding: 'utf8' })
+    const idx = stdout.lastIndexOf(META_MARK)
+    const text = idx === -1 ? stdout : stdout.slice(0, idx)
+    const status = Number(idx === -1 ? 0 : stdout.slice(idx + META_MARK.length))
+    let json = null
+    try { json = JSON.parse(text) } catch { /* non-JSON error body */ }
+    return { ok: status >= 200 && status < 300, status, json, body: text, error: null }
+  } catch (err) {
+    return { ok: false, status: 0, json: null, body: '', error: `CURL_${err.code}` }
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true })
+  }
+}
+
 export async function httpGetJson(url, opts) {
   const res = await httpGet(url, opts)
   if (!res.ok) return { ...res, json: null }

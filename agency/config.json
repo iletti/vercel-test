@@ -55,6 +55,10 @@
     "guessTlds": [".fi", ".com", ".net"],
     "currentYearGrace": 1
   },
+  "images": {
+    "model": "gemini-2.5-flash-image",
+    "note": "Nano Banana via GEMINI_API_KEY env var; one hero image per site, cached in sites/<slug>/img/"
+  },
   "pricing": {
     "site": { "min": 490, "recommended": 690, "max": 1190, "currency": "EUR", "vatNote": "hinnat + alv 25,5 %" },
     "hostingPerMonth": 25,
