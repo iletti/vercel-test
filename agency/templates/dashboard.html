@@ -108,6 +108,10 @@
 </div>
 
 <main>
+  <div class="due" id="emptyState" hidden style="background:#eef2f7;border-color:#c9d6e6">
+    <h2>📥 No lead data loaded in this browser yet</h2>
+    <p style="font-size:.88rem;margin-bottom:.6rem">On the computer where you run the pipeline: open the local dashboard, hit <b>Export tracker</b>, send the <code>tracker.json</code> file to this device (email it to yourself works fine), then press <b>Import</b> up top. Your leads appear and stay in this browser only — they are never stored on the server.</p>
+  </div>
   <div class="due" id="duePanel" hidden>
     <h2>📅 Follow-ups due</h2>
     <div id="dueList"></div>
@@ -188,10 +192,15 @@
 <script>
 'use strict';
 const CFG = window.__CONFIG__ || { price: 690, maint: 25, region: 'Satakunta' };
-const LS_T = 'agency.tracker.v1', LS_S = 'agency.settings.v1', LS_M = 'agency.manual.v1';
+const LS_T = 'agency.tracker.v1', LS_S = 'agency.settings.v1', LS_M = 'agency.manual.v1', LS_L = 'agency.leads.v1';
 let manualLeads = (() => { try { return JSON.parse(localStorage.getItem(LS_M) || '[]') } catch { return [] } })();
-const embeddedIds = new Set((window.__LEADS__ || []).map(l => l.businessId));
-let LEADS = [...(window.__LEADS__ || []), ...manualLeads.filter(m => !embeddedIds.has(m.businessId))];
+// Lead data source: embedded data.js when present (local copy), otherwise
+// whatever was loaded via Import (online copy — keeps business data out of
+// the hosting provider entirely; it lives only in this browser).
+const importedLeads = (() => { try { return JSON.parse(localStorage.getItem(LS_L) || '[]') } catch { return [] } })();
+const baseLeads = (window.__LEADS__ && window.__LEADS__.length) ? window.__LEADS__ : importedLeads;
+const embeddedIds = new Set(baseLeads.map(l => l.businessId));
+let LEADS = [...baseLeads, ...manualLeads.filter(m => !embeddedIds.has(m.businessId))];
 const saveManual = () => localStorage.setItem(LS_M, JSON.stringify(manualLeads));
 const STATUSES = ['new','contacted','demo-sent','negotiating','won','lost','do-not-contact'];
 const $ = (s) => document.querySelector(s);
@@ -488,8 +497,10 @@ $('#aSave').onclick = () => {
   if ($('#aPhone').value.trim()) setT(lead.businessId, { notes: 'Puh: ' + $('#aPhone').value.trim() });
   $('#sm2').classList.remove('open'); renderAll(); openLead(lead.businessId); toast('Lead added');
 };
-// export / import (bundle: tracker + manual leads; old flat tracker.json still imports)
-$('#btnExport').onclick = () => dl(new Blob([JSON.stringify({ tracker, manualLeads }, null, 2)], { type: 'application/json' }), 'tracker.json');
+// export / import (bundle: tracker + manual leads + the full lead list, so a
+// data-free online copy can be fed from a local export; old flat tracker.json
+// still imports)
+$('#btnExport').onclick = () => dl(new Blob([JSON.stringify({ tracker, manualLeads, leads: baseLeads }, null, 2)], { type: 'application/json' }), 'tracker.json');
 $('#btnImport').onclick = () => $('#impFile').click();
 $('#impFile').onchange = async (e) => {
   const f = e.target.files[0]; if (!f) return;
@@ -498,10 +509,17 @@ $('#impFile').onchange = async (e) => {
     const trk = inc.tracker && typeof inc.tracker === 'object' ? inc.tracker : inc;
     for (const [id, t] of Object.entries(trk)) if (!tracker[id] || (t.updatedAt || '') >= (tracker[id].updatedAt || '')) tracker[id] = t;
     for (const m of inc.manualLeads || []) if (!LEADS.some(l => l.businessId === m.businessId)) { manualLeads.push(m); LEADS.push(m); }
-    saveTracker(); saveManual(); renderAll(); toast('Imported & merged');
+    saveTracker(); saveManual();
+    if (Array.isArray(inc.leads) && inc.leads.length && !(window.__LEADS__ && window.__LEADS__.length)) {
+      // online copy: adopt the imported lead list as this browser's dataset
+      localStorage.setItem(LS_L, JSON.stringify(inc.leads));
+      toast('Imported — loading leads…'); setTimeout(() => location.reload(), 600); return;
+    }
+    renderAll(); toast('Imported & merged');
   } catch { toast('Import failed — not valid JSON'); }
 };
 
+$('#emptyState').hidden = LEADS.length > 0;
 renderAll();
 if (!settings.name) setTimeout(() => toast('Tip: set your name & phone under ⚙ Your info — they fill the emails'), 800);
 </script>

@@ -8,6 +8,7 @@
     "audit": "node scripts/audit.mjs",
     "generate": "node scripts/generate.mjs",
     "images": "node scripts/images.mjs",
-    "dashboard": "node scripts/dashboard.mjs"
+    "dashboard": "node scripts/dashboard.mjs",
+    "dashboard:deploy": "node scripts/dashboard.mjs && npx vercel deploy leads/data/dashboard --prod --yes"
   }
 }

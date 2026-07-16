@@ -54,8 +54,9 @@ if (fs.existsSync(trackerFile)) {
   } catch { tracker = {} }
 }
 
+// one lead per line: diff-friendly and safe for line-based tooling
 const payload =
-  `window.__LEADS__=${JSON.stringify(leadList)};\n` +
+  `window.__LEADS__=[\n${leadList.map((l) => JSON.stringify(l)).join(',\n')}\n];\n` +
   `window.__TRACKER__=${JSON.stringify(tracker)};\n` +
   `window.__CONFIG__=${JSON.stringify({
     price: config.pricing.site.recommended,
@@ -63,11 +64,29 @@ const payload =
     region: config.region
   })};`
 
+// Output goes to its own folder containing ONLY the dashboard, so deploying
+// it can never accidentally upload the raw CSVs/tracker.json sitting in
+// leads/data/. Keep Vercel Deployment Protection ON for this project — the
+// page contains your real prospect list.
+//
+// The shell (index.html) is static across regenerations; only data.js
+// changes when you re-run discovery/audit.
 const tpl = fs.readFileSync(path.join(agencyRoot(), 'templates', 'dashboard.html'), 'utf8')
-const html = tpl.replace('/*__DATA__*/', () => payload)
-const out = path.join(dataDir, 'dashboard.html')
-fs.writeFileSync(out, html)
+const html = tpl.replace('<script>/*__DATA__*/</script>', '<script src="data.js"></script>')
+const outDir = path.join(dataDir, 'dashboard')
+fs.mkdirSync(outDir, { recursive: true })
+fs.writeFileSync(path.join(outDir, 'index.html'), html)
+fs.writeFileSync(path.join(outDir, 'data.js'), payload + '\n')
+fs.writeFileSync(path.join(outDir, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
+fs.writeFileSync(
+  path.join(outDir, 'vercel.json'),
+  JSON.stringify({
+    cleanUrls: true,
+    headers: [{ source: '/(.*)', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }]
+  }, null, 2) + '\n'
+)
 
 const audited = leadList.filter((l) => l.auditStatus).length
 console.log(`Dashboard: ${leadList.length} leads (${audited} audited) from ${files.length} file(s)`)
-console.log(`Open it:   ${out}`)
+console.log(`Open it:    ${path.join(outDir, 'index.html')}`)
+console.log(`Put online: npm run dashboard:deploy   (keep Vercel Deployment Protection ON)`)
