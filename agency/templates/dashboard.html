@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leads — Satakunta Agency</title>
+<style>
+  :root{--bg:#f5f4f1;--card:#fff;--ink:#1d1d1b;--muted:#6b6b66;--line:#e3e1dc;--brand:#16324f;--acc:#2a9d8f;
+    --red:#c0392b;--amber:#b9770e;--green:#1e8449}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+  .top{background:var(--brand);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+  .top h1{font-size:1.05rem;font-weight:800;margin-right:auto}
+  .top .cnt{opacity:.75;font-weight:400;font-size:.85rem;margin-left:.6rem}
+  .top button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:.4rem .8rem;cursor:pointer;font-size:.82rem}
+  .top button:hover{background:rgba(255,255,255,.25)}
+  main{max-width:1280px;margin:0 auto;padding:1rem 1.2rem 4rem}
+  .due{background:#fdf6ec;border:1px solid #f0dcbb;border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem}
+  .due h2{font-size:.95rem;margin-bottom:.6rem}
+  .due .item{display:flex;gap:.8rem;align-items:center;padding:.35rem 0;flex-wrap:wrap}
+  .due .item.overdue .when{color:var(--red);font-weight:700}
+  .due .when{min-width:6.2rem;font-variant-numeric:tabular-nums}
+  .due a.nm{font-weight:700;color:var(--brand);cursor:pointer;text-decoration:none}
+  .due .note{color:var(--muted)}
+  .due button{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:7px;padding:.25rem .7rem;cursor:pointer}
+  .filters{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .filters input,.filters select{padding:.5rem .7rem;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:.88rem}
+  .filters input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:left;padding:.6rem .8rem;background:#faf9f6;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+  td{padding:.55rem .8rem;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr.lead{cursor:pointer}
+  tr.lead:hover{background:#f8f7f4}
+  tr.lead.dnc{opacity:.45}
+  .nm b{display:block}
+  .nm small{color:var(--muted)}
+  .b{display:inline-block;padding:.14rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;white-space:nowrap}
+  .b.NO_SITE{background:#eaf7f1;color:var(--green)}
+  .b.BROKEN{background:#fdecea;color:var(--red)}
+  .b.OUTDATED,.b.WEAK{background:#fdf3e3;color:var(--amber)}
+  .b.OK,.b.GOOD{background:#eee;color:#666}
+  .b.unaudited{background:#eef2f7;color:#5a7599}
+  .st{border:1px solid var(--line);border-radius:7px;padding:.28rem .4rem;font-size:.82rem;background:#fff}
+  .st.s-won{background:#eaf7f1;border-color:#bfe3d2}
+  .st.s-demo-sent,.st.s-negotiating{background:#fdf6ec}
+  .st.s-do-not-contact,.st.s-lost{background:#f3f3f3;color:#888}
+  td .next{font-size:.78rem;color:var(--muted);white-space:nowrap}
+  td .next.overdue{color:var(--red);font-weight:700}
+  /* drawer */
+  #ov{position:fixed;inset:0;background:rgba(20,20,18,.45);z-index:30;display:none}
+  #dr{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);background:#fff;z-index:31;display:none;flex-direction:column;box-shadow:-12px 0 40px rgba(0,0,0,.18)}
+  #dr.open,#ov.open{display:flex}
+  #ov.open{display:block}
+  #dr .hd{padding:1rem 1.3rem;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:.8rem}
+  #dr .hd h2{font-size:1.15rem}
+  #dr .hd .sub{color:var(--muted);font-size:.85rem}
+  #dr .hd button{margin-left:auto;border:none;background:none;font-size:1.5rem;cursor:pointer;color:var(--muted)}
+  #dr .bd{overflow-y:auto;padding:1rem 1.3rem 3rem;flex:1}
+  .sec{margin-bottom:1.4rem}
+  .sec h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:.25rem .9rem;font-size:.9rem}
+  .kv dt{color:var(--muted);white-space:nowrap}
+  .kv a{color:var(--brand)}
+  .links{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+  .links a{border:1px solid var(--line);border-radius:8px;padding:.3rem .7rem;text-decoration:none;color:var(--brand);font-size:.82rem;font-weight:600}
+  .row2{display:flex;gap:.7rem;flex-wrap:wrap}
+  .row2>div{flex:1;min-width:160px}
+  label{display:block;font-size:.75rem;color:var(--muted);margin-bottom:.2rem}
+  #dr input[type=text],#dr input[type=date],#dr select,#dr textarea,#sm input[type=text]{width:100%;padding:.5rem .6rem;border:1px solid var(--line);border-radius:8px;font-size:.88rem;font-family:inherit;background:#fff}
+  textarea{resize:vertical}
+  .warn{background:#fdecea;border:1px solid #f2c4be;color:var(--red);border-radius:10px;padding:.7rem .9rem;font-size:.85rem;margin-bottom:.8rem}
+  .tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem}
+  .tabs button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem}
+  .tabs button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .mail{background:#faf9f6;border:1px solid var(--line);border-radius:10px;padding:.9rem;white-space:pre-wrap;font-size:.86rem;max-height:340px;overflow-y:auto}
+  .mail .subj{font-weight:700;margin-bottom:.6rem}
+  .cpy{margin-top:.6rem;display:flex;gap:.6rem;align-items:center}
+  .cpy button,.icsb{background:var(--acc);border:none;color:#fff;border-radius:8px;padding:.5rem 1rem;font-weight:700;cursor:pointer;font-size:.85rem}
+  .icsb{background:#fff;color:var(--brand);border:1px solid var(--line);font-weight:600}
+  .cpy .ok{color:var(--green);font-weight:700;font-size:.85rem;opacity:0;transition:opacity .2s}
+  .cpy .ok.show{opacity:1}
+  .hint{font-size:.78rem;color:var(--muted);margin-top:.4rem}
+  /* settings modal */
+  #sm,#sm2{position:fixed;inset:0;background:rgba(20,20,18,.45);z-index:40;display:none;align-items:center;justify-content:center;padding:1rem}
+  #sm.open,#sm2.open{display:flex}
+  #sm .box,#sm2 .box{background:#fff;border-radius:14px;padding:1.4rem;max-width:460px;width:100%}
+  #sm h2,#sm2 h2{font-size:1rem;margin-bottom:.9rem}
+  #sm .f,#sm2 .f{margin-bottom:.7rem}
+  #sm .act,#sm2 .act{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem}
+  #sm .act button,#sm2 .act button{border-radius:8px;padding:.5rem 1rem;cursor:pointer;border:1px solid var(--line);background:#fff}
+  #sm .act button.pri,#sm2 .act button.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+  #sm2 input[type=text]{width:100%;padding:.5rem .6rem;border:1px solid var(--line);border-radius:8px;font-size:.88rem}
+  #toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);background:#1d1d1b;color:#fff;border-radius:10px;padding:.6rem 1.1rem;font-size:.85rem;opacity:0;transition:opacity .25s;z-index:50;pointer-events:none}
+  #toast.show{opacity:1}
+  @media(max-width:720px){.hidem{display:none}}
+</style>
+</head>
+<body>
+<script>/*__DATA__*/</script>
+
+<div class="top">
+  <h1>Leads — <span id="regionName"></span><span class="cnt" id="counts"></span></h1>
+  <button id="btnAdd">+ Add lead</button>
+  <button id="btnSettings">⚙ Your info</button>
+  <button id="btnExport">Export tracker</button>
+  <button id="btnImport">Import</button>
+  <input type="file" id="impFile" accept=".json" hidden>
+</div>
+
+<main>
+  <div class="due" id="duePanel" hidden>
+    <h2>📅 Follow-ups due</h2>
+    <div id="dueList"></div>
+  </div>
+
+  <div class="filters">
+    <input id="q" type="search" placeholder="Search name, town, industry…">
+    <select id="fTown"><option value="">All towns</option></select>
+    <select id="fAudit">
+      <option value="">All audit results</option>
+      <option>NO_SITE</option><option>BROKEN</option><option>OUTDATED</option>
+      <option>WEAK</option><option>OK</option><option>GOOD</option><option value="unaudited">not audited</option>
+    </select>
+    <select id="fStatus">
+      <option value="">All statuses</option>
+      <option value="new">new</option><option value="contacted">contacted</option>
+      <option value="demo-sent">demo-sent</option><option value="negotiating">negotiating</option>
+      <option value="won">won</option><option value="lost">lost</option>
+      <option value="do-not-contact">do-not-contact</option>
+    </select>
+  </div>
+
+  <table>
+    <thead><tr>
+      <th data-k="name">Business</th>
+      <th data-k="city">Town</th>
+      <th data-k="industryKey" class="hidem">Industry</th>
+      <th data-k="auditStatus">Website</th>
+      <th data-k="_status">Status</th>
+      <th data-k="_next" class="hidem">Follow-up</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</main>
+
+<div id="ov"></div>
+<aside id="dr" aria-label="Lead detail">
+  <div class="hd"><div><h2 id="dNm"></h2><div class="sub" id="dSub"></div></div><button id="dClose" title="Close">×</button></div>
+  <div class="bd" id="dBody"></div>
+</aside>
+
+<div id="sm">
+  <div class="box">
+    <h2>Your info (used in the outreach emails)</h2>
+    <div class="f"><label>Your name</label><input type="text" id="sName"></div>
+    <div class="f"><label>Company / toiminimi</label><input type="text" id="sCo"></div>
+    <div class="f"><label>Phone</label><input type="text" id="sPhone"></div>
+    <div class="f"><label>Email</label><input type="text" id="sEmail"></div>
+    <div class="f"><label>Y-tunnus</label><input type="text" id="sYt"></div>
+    <div class="row2">
+      <div class="f"><label>Site price €</label><input type="text" id="sPrice"></div>
+      <div class="f"><label>Maintenance €/kk</label><input type="text" id="sMaint"></div>
+    </div>
+    <div class="act"><button id="sCancel">Cancel</button><button class="pri" id="sSave">Save</button></div>
+  </div>
+</div>
+<div id="sm2">
+  <div class="box">
+    <h2>Add lead manually</h2>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:.8rem">The public registry can't list sole traders (Tmi) by location — add the ones you find via Google Maps / Facebook here.</p>
+    <div class="f"><label>Business name *</label><input type="text" id="aName"></div>
+    <div class="row2">
+      <div class="f"><label>Town *</label><input type="text" id="aTown"></div>
+      <div class="f"><label>Company form</label><select id="aForm" style="width:100%;padding:.5rem .6rem;border:1px solid var(--line);border-radius:8px">
+        <option>Yksityinen elinkeinonharjoittaja (Tmi)</option><option>Osakeyhtiö</option><option>Kommandiittiyhtiö</option><option>Avoin yhtiö</option><option>Ei tiedossa</option>
+      </select></div>
+    </div>
+    <div class="row2">
+      <div class="f"><label>Industry</label><input type="text" id="aInd" placeholder="e.g. parturi-kampaamo"></div>
+      <div class="f"><label>Phone</label><input type="text" id="aPhone"></div>
+    </div>
+    <div class="f"><label>Website / Facebook (if any)</label><input type="text" id="aWeb"></div>
+    <div class="act"><button id="aCancel">Cancel</button><button class="pri" id="aSave">Add</button></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+const CFG = window.__CONFIG__ || { price: 690, maint: 25, region: 'Satakunta' };
+const LS_T = 'agency.tracker.v1', LS_S = 'agency.settings.v1', LS_M = 'agency.manual.v1';
+let manualLeads = (() => { try { return JSON.parse(localStorage.getItem(LS_M) || '[]') } catch { return [] } })();
+const embeddedIds = new Set((window.__LEADS__ || []).map(l => l.businessId));
+let LEADS = [...(window.__LEADS__ || []), ...manualLeads.filter(m => !embeddedIds.has(m.businessId))];
+const saveManual = () => localStorage.setItem(LS_M, JSON.stringify(manualLeads));
+const STATUSES = ['new','contacted','demo-sent','negotiating','won','lost','do-not-contact'];
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const today = () => new Date().toISOString().slice(0,10);
+
+// ---- state: embedded tracker.json merged with localStorage (newer updatedAt wins)
+let tracker = (() => {
+  const emb = window.__TRACKER__ || {};
+  let loc = {};
+  try { loc = JSON.parse(localStorage.getItem(LS_T) || '{}') } catch {}
+  const out = { ...emb };
+  for (const [id, t] of Object.entries(loc)) {
+    if (!out[id] || (t.updatedAt || '') >= (out[id].updatedAt || '')) out[id] = t;
+  }
+  return out;
+})();
+let settings = (() => {
+  try { return { price: CFG.price, maint: CFG.maint, ...JSON.parse(localStorage.getItem(LS_S) || '{}') } }
+  catch { return { price: CFG.price, maint: CFG.maint } }
+})();
+
+const saveTracker = () => localStorage.setItem(LS_T, JSON.stringify(tracker));
+const T = (id) => tracker[id] || {};
+const setT = (id, patch) => { tracker[id] = { ...T(id), ...patch, updatedAt: new Date().toISOString() }; saveTracker(); };
+
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200); }
+
+const isTmi = (l) => /yksityinen elinkeinonharjoittaja|toiminimi/i.test(l.companyForm || '');
+const statusOf = (l) => T(l.businessId).status || 'new';
+const nextOf = (l) => T(l.businessId).next || '';
+
+// ---- outreach templates -------------------------------------------------
+function reasonLine(l){
+  switch (l.auditStatus) {
+    case 'NO_SITE': return 'teillä ei tunnu olevan omia kotisivuja';
+    case 'BROKEN': return 'sivustonne ei näytä toimivan tällä hetkellä';
+    case 'OUTDATED': case 'WEAK': return 'sivustonne vaikuttaa jääneen ajastaan jälkeen (esim. mobiilikäyttö)';
+    default: return 'nykyisiä verkkosivujanne voisi mielestäni parantaa';
+  }
+}
+function sig(){
+  return [settings.name, settings.co, settings.phone, settings.email, settings.yt ? 'Y-tunnus ' + settings.yt : '']
+    .filter(Boolean).join('\n') || '[Täytä omat tietosi ⚙ Your info -napista]';
+}
+function demoUrlOf(l){ return T(l.businessId).demoUrl || '[DEMO-LINKKI — deploy ensin, liitä tähän]'; }
+
+function tplEmail(l){
+  return { subject: `Tein teille ehdotuksen uusista kotisivuista (${cap(l.city)})`,
+  body:
+`Hei,
+
+törmäsin ${l.name}:n tietoihin etsiessäni ${cap(l.city)}n alueen yrityksiä, ja huomasin, että ${reasonLine(l)}.
+
+Tein oma-aloitteisesti ehdotuksen siitä, miltä sivunne voisivat näyttää. Se on katsottavissa täällä (ei julkinen, ei löydy Googlesta):
+
+${demoUrlOf(l)}
+
+Jos ehdotus miellyttää, saatte sen käyttöönne omalla osoitteella hintaan ${settings.price} € + alv. Hintaan kuuluu sivuston viimeistely teidän kuvillanne ja tiedoillanne, oma verkkotunnus, julkaisu ja Google-näkyvyyden perusasiat. Ylläpito ${settings.maint} €/kk — kaikki muutokset kuuluvat hintaan.
+
+Jos ehdotus ei kiinnosta, ei tarvitse tehdä mitään — poistan demon parin viikon sisällä, eikä teille jää mitään velvoitteita. Jos ette halua jatkossa vastaavia viestejä, vastatkaa "ei kiitos".
+
+Ystävällisin terveisin,
+${sig()}` };
+}
+function tplFollow1(l){
+  return { subject: 'Re: ehdotus uusista kotisivuista',
+  body:
+`Hei,
+
+laitoin viime viikolla linkin kotisivuehdotukseen (${demoUrlOf(l)}). Ehdittekö vilkaista?
+
+Jos jokin mietityttää — hinta, sisältö, aikataulu — vastaan mielelläni. Muutan demoa myös veloituksetta, jos esimerkiksi värit tai kuvat eivät osu.
+
+Terveisin
+${sig()}` };
+}
+function tplFollow2(l){
+  return { subject: 'Poistan demon perjantaina',
+  body:
+`Hei,
+
+poistan tekemäni kotisivudemon perjantaina, ellei sille ole käyttöä. Jos haluatte pitää sen, lyhyt vastaus tähän viestiin riittää.
+
+Kiitos ajastanne joka tapauksessa — menestystä ${cap(l.city)}iin!
+
+Terveisin
+${sig()}` };
+}
+function tplSms(l){
+  return { subject: 'SMS (puhelun jälkeen)',
+  body: `Kiitos puhelusta! Tässä ehdotus uusiksi kotisivuiksenne: ${demoUrlOf(l)} Terveisin ${settings.name || '[nimi]'}, ${settings.phone || '[puhelin]'}` };
+}
+function tplCall(l){
+  return { subject: 'Soittorunko', body:
+`AVAUS: "Päivää, ${settings.name || '[nimi]'} täältä ${CFG.region}sta. Soitan siksi, että tein teidän yritykselle valmiin ehdotuksen uusista kotisivuista — omasta aloitteesta, ei maksa mitään katsoa. Olisiko minuutti aikaa?"
+
+MIKSI SOITAN: "Huomasin, että ${reasonLine(l)}. Tein valmiin mallin, jonka voitte katsoa puhelimella. Jos ei miellytä, poistan sen. Saanko laittaa linkin tekstiviestillä tähän numeroon?"
+
+HINTA JOS KYSYY: "${settings.price} € plus alvit valmiiksi tehtynä, ylläpito ${settings.maint} €/kk — muutokset kuuluvat hintaan."
+
+LOPETUS: "Kiitos ajasta — laitan linkin. Katsokaa rauhassa, soittelen parin päivän päästä perään."` };
+}
+function cap(s){ s = String(s || '').toLowerCase(); return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ---- top-level render ---------------------------------------------------
+function counts(){
+  const c = {}; LEADS.forEach(l => { const s = statusOf(l); c[s] = (c[s] || 0) + 1; });
+  $('#counts').textContent = ` ${LEADS.length} leads · ${c['contacted'] || 0} contacted · ${c['demo-sent'] || 0} demos · ${c['won'] || 0} won`;
+}
+function renderDue(){
+  const t = today();
+  const due = LEADS
+    .map(l => ({ l, next: nextOf(l), st: statusOf(l) }))
+    .filter(x => x.next && x.next <= t && !['won','lost','do-not-contact'].includes(x.st))
+    .sort((a,b) => a.next.localeCompare(b.next));
+  $('#duePanel').hidden = !due.length;
+  $('#dueList').innerHTML = due.map(x => `
+    <div class="item ${x.next < t ? 'overdue' : ''}">
+      <span class="when">${x.next}${x.next < t ? ' ⚠' : ''}</span>
+      <a class="nm" data-open="${esc(x.l.businessId)}">${esc(x.l.name)}</a>
+      <span class="note">${esc(T(x.l.businessId).nextNote || '')}</span>
+      <button data-done="${esc(x.l.businessId)}">Done ✓</button>
+    </div>`).join('');
+}
+function rowHtml(l){
+  const t = T(l.businessId); const st = statusOf(l); const nx = nextOf(l);
+  const audit = l.auditStatus
+    ? `<span class="b ${esc(l.auditStatus)}">${esc(l.auditStatus)}</span>`
+    : '<span class="b unaudited">not audited</span>';
+  return `<tr class="lead ${st === 'do-not-contact' ? 'dnc' : ''}" data-id="${esc(l.businessId)}">
+    <td class="nm"><b>${esc(l.name)}</b><small>${esc(l.companyForm || '')}${isTmi(l) ? ' · 📞 call only' : ''}</small></td>
+    <td>${esc(cap(l.city))}</td>
+    <td class="hidem">${esc(l.industryKey || '')}</td>
+    <td>${audit}${l.website ? ` <a href="${esc(l.website)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗</a>` : ''}</td>
+    <td><select class="st s-${esc(st)}" data-st="${esc(l.businessId)}" onclick="event.stopPropagation()">
+      ${STATUSES.map(s => `<option ${s === st ? 'selected' : ''}>${s}</option>`).join('')}</select></td>
+    <td class="hidem">${nx ? `<span class="next ${nx < today() ? 'overdue' : ''}">${nx}</span>` : ''}${t.demoUrl ? ' 🔗' : ''}</td>
+  </tr>`;
+}
+let sortKey = 'auditStatus', sortAsc = true;
+const AUDIT_ORDER = { NO_SITE: 0, BROKEN: 1, OUTDATED: 2, WEAK: 3, OK: 4, GOOD: 5, '': 6 };
+function renderRows(){
+  const q = $('#q').value.toLowerCase(), town = $('#fTown').value, fa = $('#fAudit').value, fst = $('#fStatus').value;
+  let list = LEADS.filter(l =>
+    (!q || (l.name + ' ' + l.city + ' ' + (l.industry || '') + ' ' + (l.industryKey || '')).toLowerCase().includes(q)) &&
+    (!town || l.city === town) &&
+    (!fa || (fa === 'unaudited' ? !l.auditStatus : l.auditStatus === fa)) &&
+    (!fst || statusOf(l) === fst));
+  list.sort((a,b) => {
+    let va, vb;
+    if (sortKey === '_status') { va = statusOf(a); vb = statusOf(b); }
+    else if (sortKey === '_next') { va = nextOf(a) || '9999'; vb = nextOf(b) || '9999'; }
+    else if (sortKey === 'auditStatus') { va = AUDIT_ORDER[a.auditStatus || '']; vb = AUDIT_ORDER[b.auditStatus || '']; }
+    else { va = a[sortKey] || ''; vb = b[sortKey] || ''; }
+    return (va < vb ? -1 : va > vb ? 1 : 0) * (sortAsc ? 1 : -1);
+  });
+  $('#rows').innerHTML = list.map(rowHtml).join('');
+}
+function renderAll(){ counts(); renderDue(); renderRows(); }
+
+// ---- drawer -------------------------------------------------------------
+let openId = null;
+function openLead(id){
+  const l = LEADS.find(x => x.businessId === id); if (!l) return;
+  openId = id; const t = T(id);
+  $('#dNm').textContent = l.name;
+  $('#dSub').textContent = `${cap(l.city)} · ${l.industry || l.industryKey || ''}`;
+  const ytj = `https://tietopalvelu.ytj.fi/yritys/${encodeURIComponent(l.businessId)}`;
+  const g = `https://www.google.com/search?q=${encodeURIComponent('"' + l.name + '" ' + cap(l.city))}`;
+  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((l.street ? l.street + ', ' : '') + cap(l.city))}`;
+  $('#dBody').innerHTML = `
+    ${isTmi(l) ? `<div class="warn"><b>Toiminimi — do not cold-email.</b> Finnish law (917/2014 §200) requires consent for e-marketing to sole traders. Call instead — the call script is ready below.</div>` : ''}
+    <div class="sec"><h3>Info</h3>
+      <dl class="kv">
+        <dt>Y-tunnus</dt><dd><a href="${ytj}" target="_blank" rel="noopener">${esc(l.businessId)}</a></dd>
+        <dt>Form</dt><dd>${esc(l.companyForm || '—')}</dd>
+        <dt>Industry</dt><dd>${esc(l.industry || '—')}</dd>
+        <dt>Address</dt><dd>${esc([l.street, l.postCode, cap(l.city)].filter(Boolean).join(', ') || '—')}</dd>
+        <dt>Registered</dt><dd>${esc(l.registered || '—')}</dd>
+        <dt>Website</dt><dd>${l.website ? `<a href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.website)}</a>${l.websiteSource === 'guess' ? ' <b style="color:var(--amber)">(guessed — verify!)</b>' : ''}` : '— none found'}</dd>
+        <dt>Audit</dt><dd>${l.auditStatus ? `<span class="b ${esc(l.auditStatus)}">${esc(l.auditStatus)}</span> ${esc(l.auditFlags || '')}` : 'not audited'}</dd>
+      </dl>
+      <div class="links"><a href="${g}" target="_blank" rel="noopener">Google</a><a href="${maps}" target="_blank" rel="noopener">Maps</a><a href="${ytj}" target="_blank" rel="noopener">YTJ</a></div>
+    </div>
+    <div class="sec"><h3>Pipeline</h3>
+      <div class="row2">
+        <div><label>Status</label><select id="eSt">${STATUSES.map(s => `<option ${s === statusOf(l) ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+        <div><label>Demo URL</label><input type="text" id="eDemo" placeholder="https://…vercel.app" value="${esc(t.demoUrl || '')}"></div>
+      </div>
+      <div class="row2" style="margin-top:.6rem">
+        <div><label>Follow-up date</label><input type="date" id="eNext" value="${esc(t.next || '')}"></div>
+        <div><label>Follow-up note</label><input type="text" id="eNextNote" placeholder="e.g. call back, send follow-up 1" value="${esc(t.nextNote || '')}"></div>
+      </div>
+      <div class="row2" style="margin-top:.6rem;align-items:flex-end">
+        <div style="flex:2"><label>Notes</label><textarea id="eNotes" rows="3">${esc(t.notes || '')}</textarea></div>
+        <div style="flex:0"><button class="icsb" id="btnIcs" title="Download calendar reminder">📅 .ics</button></div>
+      </div>
+      <div class="hint">Everything saves automatically to this browser. Contact log: ${esc((t.log || []).slice(-4).map(e => `${e.d} ${e.e}`).join(' · ') || '—')}</div>
+    </div>
+    <div class="sec"><h3>Outreach — copy &amp; paste</h3>
+      <div class="tabs" id="tabs"></div>
+      <div class="mail" id="mailBox"></div>
+      <div class="cpy"><button id="btnCopy">Copy ✂</button><span class="ok" id="cpOk">Copied — follow-up auto-set ✓</span></div>
+      <div class="hint">Copying logs today as contact date and sets a follow-up in 6 days if none is set.</div>
+    </div>`;
+  // tabs
+  const tabs = isTmi(l)
+    ? [['Call script', tplCall], ['SMS', tplSms], ['Follow-up 1', tplFollow1], ['Follow-up 2', tplFollow2]]
+    : [['Email', tplEmail], ['Follow-up 1', tplFollow1], ['Follow-up 2', tplFollow2], ['Call script', tplCall], ['SMS', tplSms]];
+  let cur = 0;
+  const drawTabs = () => {
+    $('#tabs').innerHTML = tabs.map(([n], i) => `<button class="${i === cur ? 'on' : ''}" data-t="${i}">${n}</button>`).join('');
+    const m = tabs[cur][1](l);
+    $('#mailBox').innerHTML = `<div class="subj">Aihe: ${esc(m.subject)}</div>${esc(m.body)}`;
+    $('#mailBox').dataset.raw = 'Aihe: ' + m.subject + '\n\n' + m.body;
+  };
+  drawTabs();
+  $('#tabs').onclick = (e) => { const b = e.target.closest('[data-t]'); if (b) { cur = +b.dataset.t; drawTabs(); } };
+  $('#btnCopy').onclick = async () => {
+    const txt = $('#mailBox').dataset.raw;
+    try { await navigator.clipboard.writeText(txt); }
+    catch { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+    const tt = T(id); const patch = { log: [...(tt.log || []), { d: today(), e: tabs[cur][0] + ' copied' }] };
+    if (!tt.next) { const d = new Date(); d.setDate(d.getDate() + 6); patch.next = d.toISOString().slice(0,10); patch.nextNote = 'follow up: ' + tabs[cur][0]; }
+    if ((tt.status || 'new') === 'new') patch.status = 'contacted';
+    setT(id, patch); openLead(id); renderAll();
+    $('#cpOk').classList.add('show'); setTimeout(() => $('#cpOk').classList.remove('show'), 2500);
+  };
+  $('#eSt').onchange = (e) => { setT(id, { status: e.target.value }); renderAll(); };
+  $('#eDemo').onchange = (e) => setT(id, { demoUrl: e.target.value.trim() });
+  $('#eNext').onchange = (e) => { setT(id, { next: e.target.value }); renderAll(); };
+  $('#eNextNote').onchange = (e) => setT(id, { nextNote: e.target.value });
+  $('#eNotes').onchange = (e) => setT(id, { notes: e.target.value });
+  $('#btnIcs').onclick = () => {
+    const t2 = T(id); const d = (t2.next || today()).replace(/-/g, '');
+    const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//agency//leads//FI','BEGIN:VEVENT',
+      `UID:${id}-${d}@agency`, `DTSTART;VALUE=DATE:${d}`,
+      `SUMMARY:Follow-up: ${l.name}`, `DESCRIPTION:${(t2.nextNote || '')} ${(t2.demoUrl || '')}`.trim(),
+      'BEGIN:VALARM','TRIGGER:PT9H','ACTION:DISPLAY',`DESCRIPTION:Follow-up: ${l.name}`,'END:VALARM',
+      'END:VEVENT','END:VCALENDAR'].join('\r\n');
+    dl(new Blob([ics], { type: 'text/calendar' }), `followup-${id}.ics`);
+  };
+  $('#ov').classList.add('open'); $('#dr').classList.add('open');
+}
+function closeDrawer(){ $('#ov').classList.remove('open'); $('#dr').classList.remove('open'); openId = null; }
+function dl(blob, name){ const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); URL.revokeObjectURL(a.href); }
+
+// ---- wiring -------------------------------------------------------------
+$('#regionName').textContent = CFG.region;
+document.querySelectorAll('th[data-k]').forEach(th => th.onclick = () => {
+  const k = th.dataset.k; sortAsc = sortKey === k ? !sortAsc : true; sortKey = k; renderRows();
+});
+['#q','#fTown','#fAudit','#fStatus'].forEach(s => { $(s).oninput = renderRows; });
+$('#rows').onclick = (e) => { const tr = e.target.closest('tr.lead'); if (tr && !e.target.closest('select')) openLead(tr.dataset.id); };
+$('#rows').onchange = (e) => { const s = e.target.closest('[data-st]'); if (s) { setT(s.dataset.st, { status: s.value }); renderAll(); } };
+$('#dueList').onclick = (e) => {
+  const o = e.target.closest('[data-open]'); if (o) return openLead(o.dataset.open);
+  const d = e.target.closest('[data-done]');
+  if (d) { setT(d.dataset.done, { next: '', nextNote: '', log: [...(T(d.dataset.done).log || []), { d: today(), e: 'follow-up done' }] }); renderAll(); toast('Marked done'); }
+};
+$('#ov').onclick = closeDrawer; $('#dClose').onclick = closeDrawer;
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeDrawer(); $('#sm').classList.remove('open'); $('#sm2').classList.remove('open'); } });
+// towns filter
+[...new Set(LEADS.map(l => l.city).filter(Boolean))].sort().forEach(c => {
+  const o = document.createElement('option'); o.value = c; o.textContent = cap(c); $('#fTown').appendChild(o);
+});
+// settings
+$('#btnSettings').onclick = () => {
+  ['Name','Co','Phone','Email','Yt','Price','Maint'].forEach(k => { $('#s' + k).value = settings[k.toLowerCase()] ?? ''; });
+  $('#sm').classList.add('open');
+};
+$('#sCancel').onclick = () => $('#sm').classList.remove('open');
+$('#sSave').onclick = () => {
+  ['Name','Co','Phone','Email','Yt','Price','Maint'].forEach(k => { settings[k.toLowerCase()] = $('#s' + k).value.trim(); });
+  localStorage.setItem(LS_S, JSON.stringify(settings));
+  $('#sm').classList.remove('open'); toast('Saved'); if (openId) openLead(openId);
+};
+// add lead manually
+$('#btnAdd').onclick = () => { ['aName','aTown','aInd','aPhone','aWeb'].forEach(i => $('#' + i).value = ''); $('#sm2').classList.add('open'); };
+$('#aCancel').onclick = () => $('#sm2').classList.remove('open');
+$('#aSave').onclick = () => {
+  const name = $('#aName').value.trim(), town = $('#aTown').value.trim();
+  if (!name || !town) return toast('Name and town are required');
+  const lead = {
+    businessId: 'manual-' + Date.now(), name, city: town.toUpperCase(),
+    companyForm: $('#aForm').value.replace(' (Tmi)', ''), industryKey: $('#aInd').value.trim(),
+    industry: $('#aInd').value.trim(), website: $('#aWeb').value.trim(),
+    auditStatus: $('#aWeb').value.trim() ? '' : 'NO_SITE',
+    auditFlags: $('#aWeb').value.trim() ? '' : 'added manually', street: '', postCode: '', registered: ''
+  };
+  if (lead.website && /facebook\.com/i.test(lead.website)) { lead.auditStatus = 'NO_SITE'; lead.auditFlags = 'facebook-only'; }
+  manualLeads.push(lead); saveManual(); LEADS.push(lead);
+  if ($('#aPhone').value.trim()) setT(lead.businessId, { notes: 'Puh: ' + $('#aPhone').value.trim() });
+  $('#sm2').classList.remove('open'); renderAll(); openLead(lead.businessId); toast('Lead added');
+};
+// export / import (bundle: tracker + manual leads; old flat tracker.json still imports)
+$('#btnExport').onclick = () => dl(new Blob([JSON.stringify({ tracker, manualLeads }, null, 2)], { type: 'application/json' }), 'tracker.json');
+$('#btnImport').onclick = () => $('#impFile').click();
+$('#impFile').onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const inc = JSON.parse(await f.text());
+    const trk = inc.tracker && typeof inc.tracker === 'object' ? inc.tracker : inc;
+    for (const [id, t] of Object.entries(trk)) if (!tracker[id] || (t.updatedAt || '') >= (tracker[id].updatedAt || '')) tracker[id] = t;
+    for (const m of inc.manualLeads || []) if (!LEADS.some(l => l.businessId === m.businessId)) { manualLeads.push(m); LEADS.push(m); }
+    saveTracker(); saveManual(); renderAll(); toast('Imported & merged');
+  } catch { toast('Import failed — not valid JSON'); }
+};
+
+renderAll();
+if (!settings.name) setTimeout(() => toast('Tip: set your name & phone under ⚙ Your info — they fill the emails'), 800);
+</script>
+</body>
+</html>

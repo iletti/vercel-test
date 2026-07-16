@@ -10,6 +10,7 @@ Everything here works today with zero paid APIs:
 |-------|------|--------------|
 | 1. Discover | `npm run discover` | Pulls every active company in Satakunta municipalities from the **PRH/YTJ open data API** (free, keyless), filtered to service industries that actually buy websites |
 | 2. Audit | `npm run audit -- <csv>` | Finds which of them have **no site, a broken site, or an outdated site** (domain guessing + HTTPS/mobile/staleness checks), outputs a ranked opportunity report |
+| 2b. Dashboard | `npm run dashboard` | Builds `leads/data/dashboard.html` — your local CRM: browse/filter every lead, one-click **copy-paste outreach email personalized per lead**, status pipeline, follow-up reminders with calendar (.ics) export. Edits save in your browser; Export gives a `tracker.json` backup |
 | 3. Build | `npm run generate -- <lead.json>` | Renders a tailored one-page Finnish site from a JSON profile — hero with trust stats, services, process, transparent pricing, FAQ (with FAQPage + LocalBusiness JSON-LD for Google), testimonials, credentials; 2 template designs, industry palettes, ~20 kB single file |
 | 3b. Images | `npm run images -- <lead.json>` | Optional: one Nano Banana (Gemini) hero image per site — generic Nordic industry scene, no text/logos/faces, cached on disk. Needs `GEMINI_API_KEY`; sites render fine without |
 | 4. Deploy | `vercel deploy` (see [DEPLOY.md](DEPLOY.md)) | Puts the demo on a temp URL, `noindex`ed, with an honest "this is a proposal" banner |

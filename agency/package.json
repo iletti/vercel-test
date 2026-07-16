@@ -7,6 +7,7 @@
     "discover": "node scripts/discover.mjs",
     "audit": "node scripts/audit.mjs",
     "generate": "node scripts/generate.mjs",
-    "images": "node scripts/images.mjs"
+    "images": "node scripts/images.mjs",
+    "dashboard": "node scripts/dashboard.mjs"
   }
 }

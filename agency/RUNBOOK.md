@@ -72,17 +72,31 @@ Alternate templates and palettes so demos in the same town don't look like
 siblings. Then deploy per [DEPLOY.md](DEPLOY.md) — you get a
 `https://<slug>-xxxx.vercel.app` URL.
 
-## 5. Outreach (human, the actual work)
+## 5. Outreach (human, the actual work — driven from the dashboard)
 
-- Log every lead in your tracker (copy `outreach/tracking-template.csv`, or
-  import into your CRM).
-- **Oy** → email `outreach/1-ensikontakti.fi.md`. **Tmi** → call with
-  `outreach/2-soittorunko.fi.md` (legal requirement, see README, and it
-  converts better).
-- Follow-ups on day 5–7 and day 14 (`outreach/3-seuranta.fi.md`). After the
-  day-14 message, **actually delete** the demo deployment and mark
-  `closed-removed`.
-- Any "ei kiitos" → `do-not-contact`, permanently.
+Run `npm run dashboard` and open `leads/data/dashboard.html`. It replaces the
+CSV shuffling:
+
+- **Follow-ups due** sit at the top of the page every time you open it
+  (add the `.ics` to your phone calendar for real reminders).
+- Click a lead → full info (YTJ/Google/Maps links) + ready-made outreach
+  texts personalized with the lead's name, town and audit result. Fill in
+  your own details once under **⚙ Your info**; paste the demo URL after
+  deploying. **Copy ✂** logs the contact, flips status to `contacted` and
+  auto-sets a follow-up 6 days out.
+- The dashboard enforces the legal rule itself: **Tmi leads show a red
+  "call only" warning** and open on the call script instead of the email
+  (Act 917/2014 § 200 — no cold email to sole traders).
+- **Sole traders never appear in the PRH location data** (their addresses
+  are protected personal data), so find them via Google Maps/Facebook and
+  use **+ Add lead** — Facebook-only businesses count as NO_SITE prospects.
+- Statuses: `new → contacted → demo-sent → negotiating → won/lost`;
+  any "ei kiitos" → `do-not-contact`, permanently. After the day-14
+  message, **actually delete** the demo deployment.
+- Edits live in your browser (localStorage). Hit **Export tracker** now and
+  then and save the file as `leads/data/tracker.json` — regenerating the
+  dashboard picks it up, and it's your backup if the browser data is
+  cleared.
 
 ## 6. Deliver & maintain
 
