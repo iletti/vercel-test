@@ -98,6 +98,11 @@ CSV shuffling:
   dashboard picks it up, and it's your backup if the browser data is
   cleared.
 
+**Want it synced across phone + laptop, always current?** Set up cloud mode
+once (see [SYNC-SETUP.md](SYNC-SETUP.md)). Then the loop becomes: `npm run
+discover`/`audit` → `npm run push` → open the dashboard URL anywhere. No
+export/import, no stale copies; the badge reads **☁ Synced**.
+
 ## 6. Deliver & maintain
 
 Sale closed → get photos/exact info → set `demoBanner: false` → regenerate →

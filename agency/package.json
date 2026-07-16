@@ -9,6 +9,9 @@
     "generate": "node scripts/generate.mjs",
     "images": "node scripts/images.mjs",
     "dashboard": "node scripts/dashboard.mjs",
-    "dashboard:deploy": "node scripts/dashboard.mjs && npx vercel deploy leads/data/dashboard --prod --yes"
+    "dashboard:deploy": "node scripts/dashboard.mjs && npx vercel deploy leads/data/dashboard --prod --yes",
+    "app:build": "node scripts/build-app.mjs",
+    "app:deploy": "node scripts/build-app.mjs && npx vercel deploy dashboard-app --prod --yes",
+    "push": "node scripts/push.mjs"
   }
 }

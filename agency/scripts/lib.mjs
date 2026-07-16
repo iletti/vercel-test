@@ -108,6 +108,47 @@ export function loadConfig() {
   return JSON.parse(fs.readFileSync(path.join(dir, '..', 'config.json'), 'utf8'))
 }
 
+// Load agency/.env.local (gitignored) into process.env if present. This is
+// where the KV token lives for local pipeline pushes — never committed.
+export function loadEnvLocal() {
+  const file = path.join(agencyRoot(), '.env.local')
+  if (!fs.existsSync(file)) return
+  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/)
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '')
+  }
+}
+
+// Vercel KV / Upstash Redis over its REST API. Reads the same env var names
+// Vercel injects when you connect a KV store to the project.
+function kvCreds() {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+  return { url, token }
+}
+
+export function kvConfigured() {
+  const { url, token } = kvCreds()
+  return Boolean(url && token)
+}
+
+async function kvCommand(cmd) {
+  const { url, token } = kvCreds()
+  if (!url || !token) throw new Error('KV not configured (set KV_REST_API_URL and KV_REST_API_TOKEN)')
+  const res = await httpPostJson(url, { headers: { Authorization: `Bearer ${token}` }, body: cmd, timeout: 30 })
+  if (!res.ok) throw new Error(`KV error ${res.status}: ${res.body?.slice(0, 200)}`)
+  return res.json?.result
+}
+
+export async function kvGetState(key) {
+  const raw = await kvCommand(['GET', key])
+  return raw ? JSON.parse(raw) : null
+}
+
+export async function kvSetState(key, state) {
+  await kvCommand(['SET', key, JSON.stringify(state)])
+}
+
 export function agencyRoot() {
   return path.join(path.dirname(new URL(import.meta.url).pathname), '..')
 }
